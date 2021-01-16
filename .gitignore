@@ -1,0 +1,10 @@
+# Environment files
+*.swp
+.DS_Store
+
+# Npm
+node_modules
+package-lock.json
+
+# Secrets
+.env
