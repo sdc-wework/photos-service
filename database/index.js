@@ -1,4 +1,4 @@
-require('./init.js');
+require('dotenv').config({ path: '../.env' });
 const mongoose = require('mongoose');
 
 const mongo = process.env.DATABASE_URL ? process.env.DATABASE_URL : 'mongodb://localhost/spacework';
