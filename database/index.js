@@ -1,11 +1,13 @@
-require('dotenv').config({ path: '../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
 const mongoose = require('mongoose');
 
 const mongo = process.env.DATABASE_URL ? process.env.DATABASE_URL : 'mongodb://localhost/spacework';
 mongoose.connect(mongo, { useUnifiedTopology: true, useNewUrlParser: true });
 
 const photoSchema = mongoose.Schema({
-  _id: Number,
+  id: Number,
   workspaceId: Number,
   description: String,
   url: String,

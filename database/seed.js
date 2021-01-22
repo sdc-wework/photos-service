@@ -53,7 +53,7 @@ const generateData = async () => {
       const description = words[randomIntBetween(0, words.length - 1)];
 
       const image = {
-        _id: photoId,
+        id: photoId,
         workspaceId: i,
         url: `/api/photos/${photoId}`,
         description: capitalize(description),
@@ -66,10 +66,15 @@ const generateData = async () => {
   await Photo.deleteMany({});
   const photos = await Photo.create(images);
 
-  console.log(`Generated: ${photos.length} photos`);
+  photosLimit = photos.length;
 
+  console.log(`Generated: ${photos.length} photos`);
+};
+
+const run = async () => {
+  await generateData();
   process.exit();
 };
 
-generateData();
+run();
 
