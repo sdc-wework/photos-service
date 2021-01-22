@@ -1,3 +1,6 @@
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
 const https = require('https');
 const {
   S3Client,
@@ -25,8 +28,9 @@ const getImage = url => {
   });
 };
 
-const uploadToS3 = async (fileName, fileBody, fileType = '') => {
-  const s3 = new S3Client({ region: process.env.AWS_REGION });
+const s3 = new S3Client({ region: process.env.AWS_REGION });
+
+const createBucket = async () => {
   // Create bucket if does not exist
   try {
     const data = await s3.send(new CreateBucketCommand({
@@ -36,6 +40,9 @@ const uploadToS3 = async (fileName, fileBody, fileType = '') => {
   } catch (err) {
     console.log(`${process.env.AWS_S3_BUCKET} already exists`);
   }
+};
+
+const uploadToS3 = async (fileName, fileBody, fileType = '') => {
   // Upload file to bucket
   try {
     const results = await s3.send(new PutObjectCommand({
@@ -51,6 +58,7 @@ const uploadToS3 = async (fileName, fileBody, fileType = '') => {
 };
 
 const uploadPhotos = async urls => {
+  await createBucket();
   for (let i = 0; i < urls.length && i < photosLimit; i++) {
     const url = urls[i];
     const urlParts = url.split('.');
