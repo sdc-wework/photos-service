@@ -5,7 +5,7 @@ const mongo = process.env.DATABASE_URL ? process.env.DATABASE_URL : 'mongodb://l
 mongoose.connect(mongo, { useUnifiedTopology: true, useNewUrlParser: true });
 
 const photoSchema = mongoose.Schema({
-  _id: Number,
+  id: Number,
   workspaceId: Number,
   description: String,
   url: String,
