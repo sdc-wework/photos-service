@@ -7,10 +7,20 @@
   "engines": {
     "node": ">=6.13.0"
   },
-  "scripts": {},
+  "scripts": {
+    "seed": "node database/seed.js",
+    "seed:s3": "node database/seed-s3.js",
+    "start": "npx webpack --watch --mode development",
+    "build": "npx webpack --mode development",
+    "server": "node server/index.js",
+    "server:dev": "nodemon server/index.js",
+    "test": "cd test && jest"
+  },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.3.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "mongoose": "^5.11.12"
   },
   "devDependencies": {

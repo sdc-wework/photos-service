@@ -14,7 +14,16 @@ const photoSchema = mongoose.Schema({
 });
 const Photo = mongoose.model('Photo', photoSchema);
 
+const getAllPhotos = async () => await Photo.find({}).exec();
+
+const getPhotoById = async id => await Photo.findOne({ id });
+
+const getPhotosByWorkspaceId = async workspaceId => await Photo.find({ workspaceId }).exec();
+
 module.exports = {
   Photo,
+  getAllPhotos,
+  getPhotoById,
+  getPhotosByWorkspaceId,
 };
 
