@@ -14,7 +14,7 @@
     "build": "npx webpack --mode development",
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
-    "test": "cd test && jest"
+    "test": "jest --testPathPattern=test"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.3.0",
@@ -24,6 +24,13 @@
     "mongoose": "^5.11.12"
   },
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-jest": "^26.6.3",
+    "core-js": "^3.8.3",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "jest": "^26.6.3",
+    "regenerator-runtime": "^0.13.7"
   }
 }

@@ -17,14 +17,24 @@ app.get('/api/photos', async (req, res) => {
 
 app.get('/api/photos/:id', async (req, res) => {
   const { id } = req.params;
-  const photo = await db.getPhotoById(id);
-  res.json(photo);
+  try {
+    const photo = await db.getPhotoById(id);
+    res.json(photo);
+  } catch (err) {
+    console.error(`No error exits for id: ${id}`);
+    res.sendStatus(500);
+  }
 });
 
 app.get('/api/photos/workspace/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
-  const photos = await db.getPhotosByWorkspaceId(workspaceId);
-  res.json(photos);
+  try {
+    const photos = await db.getPhotosByWorkspaceId(workspaceId);
+    res.json(photos);
+  } catch (err) {
+    console.error(`No photos exist for workspaceId: ${workspaceId}`);
+    res.sendStatus(500);
+  }
 });
 
 // Fallback to index.html for React Router
