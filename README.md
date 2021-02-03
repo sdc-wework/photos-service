@@ -1,13 +1,17 @@
-# Project Name
+# Photos Service
 
-> Project description
+> This service provides the photo url and meta data.
 
 ## Related Projects
 
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
-  - https://github.com/teamName/repo
+ - https://github.com/space-work/review-service
+ - https://github.com/space-work/amenities-service
+ - https://github.com/space-work/contact-widget-service
+ - https://github.com/space-work/workspace-service
+ - https://github.com/space-work/location-service
+ - https://github.com/space-work/workspace-description-service
+ - https://github.com/space-work/photos-service
+ - https://github.com/space-work/nearby-workspaces
 
 ## Table of Contents
 
@@ -17,16 +21,26 @@
 
 ## Usage
 
-> Some usage instructions
-
 ## Requirements
 
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
 - Node 6.13.0
-- etc
+- Mongo 4.4.1
 
 ## Development
+
+First time set up:
+
+Run seeding scripts (mongo must be installed and running)
+```
+npm run seed
+```
+
+Start server
+```
+npm run server:dev
+```
 
 ### Installing Dependencies
 

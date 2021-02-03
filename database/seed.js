@@ -55,7 +55,7 @@ const generateData = async () => {
       const image = {
         id: photoId,
         workspaceId: i,
-        url: `/api/photos/${photoId}`,
+        url: `https://rpt25-photos-service.s3-us-west-1.amazonaws.com/${photoId}.jpg`,
         description: capitalize(description),
       };
 
