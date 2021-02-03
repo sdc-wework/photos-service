@@ -8,3 +8,7 @@ package-lock.json
 
 # Secrets
 .env
+
+# Build files
+dist/*
+!dist/index.html
