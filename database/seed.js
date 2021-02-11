@@ -47,7 +47,7 @@ const generateData = async () => {
 
     const firstSentence = sentences.pop().slice(0, -1);
     const words = firstSentence.toLowerCase().split(' ');
-    const limit = photoId + randomIntBetween(1, 7);
+    const limit = photoId + randomIntBetween(3, 7);
 
     for (; photoId < limit; photoId++) {
       const description = words[randomIntBetween(0, words.length - 1)];
