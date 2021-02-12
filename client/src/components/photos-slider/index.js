@@ -104,7 +104,7 @@ const PhotosSlider = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:6001/api/photos/workspace/${workspaceId}`)
+    fetch(`/api/photos/workspace/${workspaceId}`)
       .then(res => res.json())
       .then(data => {
         setPhotos(data);
