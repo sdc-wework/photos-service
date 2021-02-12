@@ -23,12 +23,14 @@ import {
 const SlideNav = ({ photos, activeSlide = 0, handleSetSlide }) => {
   let offset = 0;
 
-  if (activeSlide > 3) {
-    offset = activeSlide - 3;
-  }
+  if (photos.length > 6) {
+    if (activeSlide > 3) {
+      offset = activeSlide - 3;
+    }
 
-  if (activeSlide > photos.length - 3) {
-    offset = photos.length - 6;
+    if (activeSlide > photos.length - 3) {
+      offset = photos.length - 6;
+    }
   }
 
   return (
