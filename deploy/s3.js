@@ -1,32 +1,11 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const https = require('https');
 const {
   S3Client,
   PutObjectCommand,
   CreateBucketCommand
 } = require('@aws-sdk/client-s3');
-
-const imageUrls = require('./image-urls.js');
-let photosLimit = 700;
-
-const getImage = url => {
-  return new Promise((resolve, reject) => {
-    let image = Buffer.alloc(0);
-    https.get(url, res => {
-      res.on('data', data => {
-        const chunk = Buffer.from(data);
-        image = Buffer.concat([image, chunk]);
-      });
-      res.on('end', data => {
-        resolve(image);
-      });
-    }).on('error', error => {
-      reject(error);
-    });
-  });
-};
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 
@@ -57,21 +36,8 @@ const uploadToS3 = async (fileName, fileBody, fileType = '') => {
   }
 };
 
-const uploadPhotos = async urls => {
-  await createBucket();
-  for (let i = 0; i < urls.length && i < photosLimit; i++) {
-    const url = urls[i];
-    const urlParts = url.split('.');
-    const extension = `.${urlParts[urlParts.length - 1]}`;
-    const image = await getImage(url);
-    await uploadToS3(`${i + 1}${extension}`, image, 'image/jpeg');
-  }
+module.exports = {
+  createBucket,
+  uploadToS3,
 };
-
-const run = async () => {
-  await uploadPhotos(imageUrls);
-  process.exit();
-};
-
-run();
 
