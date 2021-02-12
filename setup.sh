@@ -18,4 +18,5 @@ git clone https://github.com/space-work/photos-service.git
 cd photos-service
 npm i
 npm run seed
+npm run build
 pm2 start server/index.js
