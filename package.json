@@ -9,7 +9,7 @@
   },
   "scripts": {
     "seed": "node database/seed.js",
-    "seed:s3": "node database/seed-s3.js",
+    "seed:s3": "node deploy/upload-photos.js",
     "start": "npx webpack --watch --mode development",
     "build": "npx webpack --mode development",
     "server": "node server/index.js",
@@ -21,13 +21,20 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.11.12"
+    "mongoose": "^5.11.12",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1",
+    "webpack": "^5.19.0",
+    "webpack-cli": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "babel-jest": "^26.6.3",
+    "babel-loader": "^8.2.2",
     "core-js": "^3.8.3",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "jest": "^26.6.3",

@@ -47,7 +47,7 @@ const generateData = async () => {
 
     const firstSentence = sentences.pop().slice(0, -1);
     const words = firstSentence.toLowerCase().split(' ');
-    const limit = photoId + randomIntBetween(1, 7);
+    const limit = photoId + randomIntBetween(3, 7);
 
     for (; photoId < limit; photoId++) {
       const description = words[randomIntBetween(0, words.length - 1)];
@@ -55,7 +55,7 @@ const generateData = async () => {
       const image = {
         id: photoId,
         workspaceId: i,
-        url: `https://rpt25-photos-service.s3-us-west-1.amazonaws.com/${photoId}.jpg`,
+        url: `https://rpt25-photos-service.s3-us-west-1.amazonaws.com/photos/${photoId}.jpg`,
         description: capitalize(description),
       };
 
