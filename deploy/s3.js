@@ -21,7 +21,7 @@ const createBucket = async () => {
   }
 };
 
-const uploadToS3 = async (fileName, fileBody, fileType = '') => {
+const uploadToS3 = async (fileName, fileBody, fileType = '', encoding = '') => {
   // Upload file to bucket
   try {
     const results = await s3.send(new PutObjectCommand({
@@ -29,6 +29,7 @@ const uploadToS3 = async (fileName, fileBody, fileType = '') => {
       Key: fileName,
       Body: fileBody,
       ContentType: fileType,
+      ContentEncoding: encoding,
     }));
     console.log(`Successfully uploaded data to ${process.env.AWS_S3_BUCKET}/${fileName}`);
   } catch (err) {
