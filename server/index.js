@@ -50,9 +50,10 @@ app.post('/api/photos/workspace/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
   const newPhotoInfo = req.body;
   const newPhotoUrl = newPhotoInfo.url;
+  const newPhotodescription = newPhotoInfo.description;
 
   try {
-    await db.savePhoto(workspaceId, newPhotoUrl);
+    await db.savePhoto(workspaceId, newPhotoUrl, newPhotodescription);
     res.sendStatus(201);
   } catch (err) {
     console.error('Unable to save photo: ', err);
@@ -66,9 +67,10 @@ app.put('/api/photos/:id', async (req, res) => {
   const { id } = req.params;
   const newPhotoInfo = req.body;
   const newPhotoUrl = newPhotoInfo.url;
+  const newPhotoDescription = newPhotoInfo.description;
 
   try {
-    await db.updatePhoto(id, newPhotoUrl);
+    await db.updatePhoto(id, newPhotoUrl, newPhotoDescription);
     res.sendStatus(201);
   } catch (err) {
     console.error('Unable to update photo: ', err);
@@ -95,7 +97,7 @@ app.delete('/api/photos/workspace/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
 
   try {
-    await db.deletePhotosByWorkspaceId(workSpaceId);
+    await db.deletePhotosByWorkspaceId(workspaceId);
     res.sendStatus(201);
   } catch (err) {
     console.error('Unable to delete photos: ', err);
