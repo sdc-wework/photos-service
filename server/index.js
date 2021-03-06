@@ -45,67 +45,62 @@ app.get('*', (req, res) => {
 
 // CUD
 
-app.post('/api/photos/', async (req, res) => {
-  // format data
-  const photoInfo = req.body;
+app.post('/api/photos/workspace/:workspaceId', async (req, res) => {
+
+  const { workspaceId } = req.params;
+  const newPhotoInfo = req.body;
+  const newPhotoUrl = newPhotoInfo.url;
 
   try {
-    const savePhoto = await db.savePhoto(url);
+    await db.savePhoto(workspaceId, newPhotoUrl);
     res.sendStatus(201);
   } catch (err) {
-    console.error('Unable to save photo');
+    console.error('Unable to save photo: ', err);
     res.sendStatus(500);
   }
 });
 
 
 app.put('/api/photos/:id', async (req, res) => {
-  // format data
 
-    // some mongo command
+  const { id } = req.params;
+  const newPhotoInfo = req.body;
+  const newPhotoUrl = newPhotoInfo.url;
 
-      // handle success
-        // send status
-
-      // handle error
-        // send status
-});
-
-app.put('/api/photos/workspace/:workspaceId', async (req, res) => {
-  // format data
-
-    // some mongo command
-
-      // handle success
-        // send status
-
-      // handle error
-        // send status
+  try {
+    await db.updatePhoto(id, newPhotoUrl);
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Unable to update photo: ', err);
+    res.sendStatus(500);
+  }
 });
 
 
 app.delete('/api/photos/:id', async (req, res) => {
-    // format data
 
-    // some mongo command
+  const { id } = req.params;
 
-      // handle success
-        // send status
-
-      // handle error
-        // send status
+  try {
+    await db.deletePhotoById(id);
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Unable to delete photo: ', err);
+    res.sendStatus(500);
+  }
 });
 
 app.delete('/api/photos/workspace/:workspaceId', async (req, res) => {
-  // format data
 
-  // some mongo command
+  const { workspaceId } = req.params;
 
-    // handle success
-      // send status
-
-    // handle error
-      // send status
+  try {
+    await db.deletePhotosByWorkspaceId(workSpaceId);
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Unable to delete photos: ', err);
+    res.sendStatus(500);
+  }
 });
 
 

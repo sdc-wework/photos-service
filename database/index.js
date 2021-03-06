@@ -23,15 +23,13 @@ const getPhotosByWorkspaceId = async workspaceId => await Photo.find({ workspace
 
 // CUD
 
-// const savePhoto = async (url) => await // some mongo command
+// const savePhoto = async (workspaceId, url) => await // some mongo command
 
-// const updatePhotoById = async (id) => await // some mongo command
-
-// const updatePhotoByWorkspaceId = async (workspaceId) => await // some mongo command
+// const updatePhoto = async (id, url) => await // some mongo command
 
 // const deletePhotoById = async (id) => await // some mongo command
 
-// const deletePhotoByWorkspaceId = async (workspaceId) => await // some mongo command
+// const deletePhotosByWorkspaceId = async (workspaceId) => await // some mongo command
 
 
 module.exports = {
@@ -39,10 +37,11 @@ module.exports = {
   getAllPhotos,
   getPhotoById,
   getPhotosByWorkspaceId,
-  savePhoto,
-  updatePhotoById,
-  updatePhotoByWorkspaceId,
-  deletePhotoById,
-  deletePhotoByWorkspaceId
+
 };
+
+// savePhoto,
+// updatePhoto,
+// deletePhotoById,
+// deletePhotosByWorkspaceId
 
