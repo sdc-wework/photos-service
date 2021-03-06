@@ -47,14 +47,15 @@ app.get('*', (req, res) => {
 
 app.post('/api/photos/', async (req, res) => {
   // format data
+  const photoInfo = req.body;
 
-    // some mongo command
-
-      // handle success
-        // send status
-
-      // handle error
-        // send status
+  try {
+    const savePhoto = await db.savePhoto(url);
+    res.sendStatus(201);
+  } catch (err) {
+    console.error('Unable to save photo');
+    res.sendStatus(500);
+  }
 });
 
 
