@@ -42,6 +42,46 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
+
+// CUD
+
+app.post('', async (req, res) => {
+  // format data
+
+    // some mongo command
+
+      // handle success
+        // send status
+
+      // handle error
+        // send status
+});
+
+app.put('', async (req, res) => {
+  // format data
+
+    // some mongo command
+
+      // handle success
+        // send status
+
+      // handle error
+        // send status
+});
+
+app.delete('', async (req, res) => {
+    // format data
+
+    // some mongo command
+
+      // handle success
+        // send status
+
+      // handle error
+        // send status
+});
+
+
 const port = process.env.PORT ? process.env.PORT : 6001;
 
 app.listen(port, () => {
