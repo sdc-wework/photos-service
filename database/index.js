@@ -20,6 +20,20 @@ const getPhotoById = async id => await Photo.findOne({ id });
 
 const getPhotosByWorkspaceId = async workspaceId => await Photo.find({ workspaceId }).exec();
 
+
+// CUD
+
+// const postPhoto = async () => await // some mongo command
+
+// const updatePhotoById = async () => await // some mongo command
+
+// const updatePhotoByWorkspaceId = async () => await // some mongo command
+
+// const deletePhotoById = async () => await // some mongo command
+
+// const deletePhotoByWorkspaceId = async () => await // some mongo command
+
+
 module.exports = {
   Photo,
   getAllPhotos,

@@ -45,7 +45,7 @@ app.get('*', (req, res) => {
 
 // CUD
 
-app.post('', async (req, res) => {
+app.post('/api/photos/', async (req, res) => {
   // format data
 
     // some mongo command
@@ -57,7 +57,8 @@ app.post('', async (req, res) => {
         // send status
 });
 
-app.put('', async (req, res) => {
+
+app.put('/api/photos/:id', async (req, res) => {
   // format data
 
     // some mongo command
@@ -69,7 +70,20 @@ app.put('', async (req, res) => {
         // send status
 });
 
-app.delete('', async (req, res) => {
+app.put('/api/photos/workspace/:workspaceId', async (req, res) => {
+  // format data
+
+    // some mongo command
+
+      // handle success
+        // send status
+
+      // handle error
+        // send status
+});
+
+
+app.delete('/api/photos/:id', async (req, res) => {
     // format data
 
     // some mongo command
@@ -80,6 +94,26 @@ app.delete('', async (req, res) => {
       // handle error
         // send status
 });
+
+app.delete('/api/photos/workspace/:workspaceId', async (req, res) => {
+  // format data
+
+  // some mongo command
+
+    // handle success
+      // send status
+
+    // handle error
+      // send status
+});
+
+
+// const photoSchema = mongoose.Schema({
+//   id: Number,
+//   workspaceId: Number,
+//   description: String,
+//   url: String,
+// });
 
 
 const port = process.env.PORT ? process.env.PORT : 6001;
