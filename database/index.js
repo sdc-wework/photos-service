@@ -33,8 +33,9 @@ const savePhoto = async (workspaceId, url, description) => {
   !description ? description = await helper.getDescriptionWord() : null;
 
   let document = await helper.createDocument(nextAvailableId, workspaceId, description, url);
+  let savePhoto = await Photo.create(document);
 
-  await Photo.create(document);
+  return savePhoto;
 };
 
 const updatePhoto = async (id, url, description) => {
@@ -43,12 +44,14 @@ const updatePhoto = async (id, url, description) => {
   url ? fieldsToUpdate.url = url : null;
   description ? fieldsToUpdate.description = description : null;
 
-  await Photo.updateOne({ id: id }, fieldsToUpdate );
+  let updatePhoto = await Photo.updateOne({ id: id }, fieldsToUpdate);
+
+  return updatePhoto;
 };
 
-// const deletePhotoById = async (id) => await // some mongo command
+const deletePhotoById = async (id) => await Photo.deleteOne({ id: id });
 
-// const deletePhotosByWorkspaceId = async (workspaceId) => await // some mongo command
+const deletePhotosByWorkspaceId = async (workspaceId) => await Photo.deleteMany({ workspaceId: workspaceId });
 
 
 module.exports = {
@@ -57,11 +60,10 @@ module.exports = {
   getPhotoById,
   getPhotosByWorkspaceId,
   savePhoto,
-  updatePhoto
+  updatePhoto,
+  deletePhotoById,
+  deletePhotosByWorkspaceId
 };
 
 
-// updatePhoto,
-// deletePhotoById,
-// deletePhotosByWorkspaceId
 

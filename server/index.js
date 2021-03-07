@@ -70,8 +70,12 @@ app.put('/api/photos/:id', async (req, res) => {
   const newPhotoDescription = newPhotoInfo.description;
 
   try {
-    await db.updatePhoto(id, newPhotoUrl, newPhotoDescription);
-    res.sendStatus(201);
+    let updatePhoto = await db.updatePhoto(id, newPhotoUrl, newPhotoDescription);
+    if (updatePhoto.nModified === 1) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
+    }
   } catch (err) {
     console.error('Unable to update photo: ', err);
     res.sendStatus(500);
@@ -84,8 +88,12 @@ app.delete('/api/photos/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    await db.deletePhotoById(id);
-    res.sendStatus(201);
+    let deletePhoto = await db.deletePhotoById(id);
+    if (deletePhoto.deletedCount === 1) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (err) {
     console.error('Unable to delete photo: ', err);
     res.sendStatus(500);
@@ -97,21 +105,17 @@ app.delete('/api/photos/workspace/:workspaceId', async (req, res) => {
   const { workspaceId } = req.params;
 
   try {
-    await db.deletePhotosByWorkspaceId(workspaceId);
-    res.sendStatus(201);
+    let deletePhotosByWorkspaceId = await db.deletePhotosByWorkspaceId(workspaceId);
+    if (deletePhotosByWorkspaceId.n === deletePhotosByWorkspaceId.deletedCount && deletePhotosByWorkspaceId.deletedCount > 0) {
+      res.sendStatus(200);
+    } else {
+      res.send(404);
+    }
   } catch (err) {
     console.error('Unable to delete photos: ', err);
     res.sendStatus(500);
   }
 });
-
-
-// const photoSchema = mongoose.Schema({
-//   id: Number,
-//   workspaceId: Number,
-//   description: String,
-//   url: String,
-// });
 
 
 const port = process.env.PORT ? process.env.PORT : 6001;
