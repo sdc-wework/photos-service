@@ -1,6 +1,6 @@
 const https = require('https');
 
-getDescriptionWord = () => {
+const getDescriptionWord = () => {
   return new Promise((resolve, reject) => {
     https.get('https://hipsum.co/api/?type=hipster-centric&sentences=1', res => {
       let result = '';
@@ -18,7 +18,7 @@ getDescriptionWord = () => {
   });
 };
 
-createDocument = (id, workspaceId, description, url) => {
+const createDocument = (id, workspaceId, description, url) => {
   let document = {
     id: id,
     workspaceId: workspaceId,

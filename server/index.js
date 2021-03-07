@@ -52,12 +52,16 @@ app.post('/api/photos/workspace/:workspaceId', async (req, res) => {
   const newPhotoUrl = newPhotoInfo.url;
   const newPhotodescription = newPhotoInfo.description;
 
-  try {
-    await db.savePhoto(workspaceId, newPhotoUrl, newPhotodescription);
-    res.sendStatus(201);
-  } catch (err) {
-    console.error('Unable to save photo: ', err);
-    res.sendStatus(500);
+  if(!newPhotoUrl) {
+    res.sendStatus(400);
+  } else {
+    try {
+      await db.savePhoto(workspaceId, newPhotoUrl, newPhotodescription);
+      res.sendStatus(201);
+    } catch (err) {
+      console.error('Unable to save photo: ', err);
+      res.sendStatus(500);
+    }
   }
 });
 

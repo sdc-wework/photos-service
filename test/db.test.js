@@ -1,7 +1,4 @@
-const {
-  mongoose,
-  Photo,
-} = require('../database/index.js');
+const { mongoose, Photo } = require('../database/index.js');
 
 describe('database', () => {
 
