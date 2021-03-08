@@ -51,3 +51,53 @@ npm install -g webpack
 npm install
 ```
 
+
+# Spacework REST API
+
+## Endpoint
+    /api/photos
+
+#### GET
+
+    Photo data by photo id - /api/photos/:id
+
+    Photos data by workspace id - /api/photos/workspace/:workspaceId
+
+#### POST
+
+    New photo data - /api/photos/
+
+##### Request body example
+```
+  {
+      "url": "http://www.imageurl.com/",
+      "description": "Description goes here"
+  }
+```
+_________________
+
+
+#### PUT
+
+    Update photo url and/or photo description - /api/photos/:id
+
+##### Request body example (can have url and/or description)
+```
+  {
+      "url": "http://www.imageurl.com/",
+      "description": "Description goes here"
+  }
+```
+_________________
+
+
+#### DELETE
+
+    Photo data by photo id - /api/photos/:id
+
+    All workspace photo data - /api/photos/workspace/:workspaceId
+
+_________________
+
+
+
