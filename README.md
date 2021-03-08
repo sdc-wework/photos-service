@@ -52,7 +52,7 @@ npm install
 ```
 
 
-# Spacework REST API
+# Spacework photos service REST API
 
 ## Endpoint
     /api/photos
