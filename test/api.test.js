@@ -71,4 +71,119 @@ describe('api', () => {
     });
   });
 
+
+  // CUD
+  describe('POST', () => {
+
+    it('should respond with status 201 after sending a POST request with valid syntax', () => {
+      const options = {
+        method: 'POST',
+        uri: 'http://localhost:6001/api/photos/workspace/1000',
+        json: true,
+        body: {
+          url: "http://placekitten.com/600/600",
+          description: "I'M HUNGRY!"
+        }
+      };
+      request(options, (err, res, body) => {
+        if (err) {
+          return err;
+        }
+        expect(res.statusCode).toEqual(201);
+      });
+    });
+
+    it('should respond with status 400 after sending a POST request without a photo url - invalid syntax', () => {
+      const options = {
+        method: 'POST',
+        uri: 'http://localhost:6001/api/photos/workspace/1000',
+        json: true,
+        body: {
+          description: "I'M HUNGRY!"
+        }
+      };
+      request(options, (err, res, body) => {
+        if (err) {
+          return err;
+        }
+        expect(res.statusCode).toEqual(400);
+      });
+    });
+  });
+
+  describe('PUT', () => {
+
+    it('should respond with status 200 after a PUT request with valid syntax', () => {
+      request.get('http://localhost:6001/api/photos/workspace/1000', (err, res, body) => {
+        if (err) {
+          return err;
+        }
+        const data = JSON.parse(res.body);
+        const lastItem = data[data.length - 1];
+        const options = {
+          method: 'PUT',
+          uri: `http://localhost:6001/api/photos/${lastItem.id}`,
+          json: true,
+          body: {
+            url: "https://placeimg.com/640/480/any",
+            description: "I'M SUPER HUNGRY!"
+          }
+        };
+        request(options, (err, res, body) => {
+          if (err) {
+            return err;
+          }
+          expect(res.statusCode).toEqual(200);
+        });
+      });
+    });
+
+    it('should respond with status 400 after a PUT request without any new updates', () => {
+      request.get('http://localhost:6001/api/photos/workspace/1000', (err, res, body) => {
+        if (err) {
+          return err;
+        }
+        const data = JSON.parse(res.body);
+        const firstItem = data[0];
+        const options = {
+          method: 'PUT',
+          uri: `http://localhost:6001/api/photos/${firstItem.id}`,
+          json: true,
+          body: {
+            url: firstItem.url,
+            description: firstItem.description
+          }
+        };
+        request(options, (err, res, body) => {
+          if (err) {
+            return err;
+          }
+          expect(res.statusCode).toEqual(400);
+        });
+      });
+    });
+  });
+
+
+  // REFACTOR
+  describe('DELETE', () => {
+
+    it('should respond with status 200 after a DELETE request with valid syntax', async () => {
+      request.delete('http://localhost:6001/api/photos/workspace/1000', (err, res, body) => {
+        if (err) {
+          return err;
+        }
+        expect(res.statusCode).toEqual(200);
+      });
+    });
+
+    it('should respond with status 404 after a DELETE request for an non-existent resource', async () => {
+      request.delete('http://localhost:6001/api/photos/workspace/1000', (err, res, body) => {
+        if (err) {
+          return err;
+        }
+        expect(res.statusCode).toEqual(404);
+      });
+    });
+  });
 });

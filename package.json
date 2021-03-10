@@ -15,7 +15,7 @@
     "build": "npx webpack --mode production",
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
-    "test": "jest --testPathPattern=test"
+    "test": "jest --testPathPattern=test --runInBand"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.3.0",
@@ -34,6 +34,7 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
+    "@jest/test-sequencer": "^26.6.3",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
