@@ -15,7 +15,9 @@
     "build": "npx webpack --mode production",
     "server": "node server/index.js",
     "server:dev": "nodemon server/index.js",
-    "test": "jest --testPathPattern=test --runInBand"
+    "test": "jest --testPathPattern=test --runInBand",
+    "postgresTest": "node sdc-db/sql/index.js",
+    "couchdbTest": "node sdc-db/nosql/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.3.0",
@@ -23,6 +25,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.11.12",
+    "nano": "^9.0.3",
+    "pg": "^8.5.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
