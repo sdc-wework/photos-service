@@ -21,7 +21,6 @@ const getPhotoById = async id => await Photo.findOne({ id });
 
 const getPhotosByWorkspaceId = async workspaceId => await Photo.find({ workspaceId }).exec();
 
-
 // CUD
 
 const savePhoto = async (workspaceId, url, description) => {
