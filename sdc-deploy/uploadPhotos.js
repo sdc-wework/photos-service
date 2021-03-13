@@ -1,6 +1,5 @@
 const https = require('https');
-const cloudinary = require('cloudinary');
-const sharp = require('sharp');
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 cloudinary.config({
   cloud_name: process.env.cloud_name,
@@ -11,26 +10,8 @@ cloudinary.config({
 const imageUrls = require('../deploy/image-urls.js');
 const folderName = 'sdc-spacework';
 
-const getImage = (url) => {
-  return new Promise((resolve, reject) => {
-    let image = Buffer.alloc(0);
-    https.get(url, res => {
-      res.on('data', data => {
-        const chunk = Buffer.from(data);
-        image = Buffer.concat([image, chunk]);
-      });
-      res.on('end', async data => {
-        let compressedImage = await sharp(image).toBuffer();
-        resolve(compressedImage);
-      });
-    }).on('error', error => {
-      reject(error);
-    });
-  });
-};
-
-const createFolder = (name) => {
-  cloudinary.v2.api.create_folder(name, (error, result) => {
+const createCloudinaryFolder = (name) => {
+  cloudinary.api.create_folder(name, (error, result) => {
     if (error) {
       console.error('error creating folder: ', error);
     } else {
@@ -39,24 +20,27 @@ const createFolder = (name) => {
   });
 };
 
-const uploadPhoto = async (url, folderName) => {
-  let image = await getImage(url);
-  let uploadOptions = {
-    folder: folderName
-  };
-  cloudinary.v2.uploader.upload_stream(uploadOptions, (error, result) => {
-    if (error) {
-      console.log(error);
-    };
-  })
-  .end(image);
+const uploadOptions = {
+  folder: folderName
+};
+
+const uploadPhoto = async (imageUrl, folderName) => {
+    imageUrl = `${imageUrl}?q=60`;
+    await cloudinary.uploader.upload(imageUrl, uploadOptions)
 };
 
 const uploadPhotos = async (imageUrls, folderName) => {
-  let folder = await createFolder(folderName);
-  imageUrls.forEach(imageUrl => {
-    uploadPhoto(imageUrl, folderName);
-  });
+  let folder = await createCloudinaryFolder(folderName);
+  for (let i = 0; i < imageUrls.length; i++) {
+    console.log(i);
+    let imageUrl = imageUrls[i];
+    await uploadPhoto(imageUrl, folderName);
+  };
 };
 
-uploadPhotos(imageUrls, folderName);
+const run = async () => {
+  await uploadPhotos(imageUrls, folderName);
+  process.exit();
+};
+
+run();
