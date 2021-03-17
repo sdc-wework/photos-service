@@ -46,10 +46,12 @@
     "cloudinary": "^1.25.0",
     "compression-webpack-plugin": "^7.1.2",
     "core-js": "^3.8.3",
+    "csv-writer": "^1.6.0",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "jest": "^26.6.3",
     "regenerator-runtime": "^0.13.7",
     "sharp": "^0.27.2",
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+    "uuid": "^3.4.0"
   }
 }
