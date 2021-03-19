@@ -114,11 +114,21 @@ const getWorkspaceDescriptions = async () => {
   return descriptionSentences;
 }
 
+const randomIntBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+const writeFilePromise = (filePath, data, recordCount, idIndex) => {
+  return new Promise(async (resolve, reject) => {
+    let writeStream = fs.createWriteStream(filePath);
+    await writeRecordsToTxtPromise(data, recordCount, writeStream, 'utf-8', idIndex);
+    // console.log('Done writting batch records to file');
+    writeStream.end();
+    writeStream.on('finish', () => resolve(true));
+    writeStream.on('error', reject);
+  });
+}
+
 
 const seed = async () => {
-
-  let client = await db.getClient();
-
   // get data for seed
   // let photoUrls = await getPhotos();
   // let descriptionWords = getPhotoDescriptions();
@@ -126,34 +136,48 @@ const seed = async () => {
 
   let batchInsertCount = 5000000;
   let primaryRecordCount = 10000000;
-  let batchInserts = primaryRecordCount / batchInsertCount;
+  let secondaryRecordCount = 70000000;
+  let PrimaryRecordBatchInserts = primaryRecordCount / batchInsertCount;
+  let SecondaryRecordBatchInserts = secondaryRecordCount / batchInsertCount;
+  let idIndex = 0;
   let fakeCount = 100000;
   let fakeBatchInserts = 5;
 
   try {
-    // // prepare tables
+    let client = await db.getClient();
+    // prepare tables
     await dropTables(client);
     await createTables(client);
 
-    let client2 = await db.getClient();
+    // optimizing bulk upload
+    // await helper.q.runQuery(client, `DROP INDEX photo_id`);
+    // await helper.q.runQuery(client, `DROP INDEX id`);
+    await helper.q.runQuery(client, `ALTER TABLE photos SET UNLOGGED`);
+    await helper.q.runQuery(client, `ALTER TABLE workspaces SET UNLOGGED`);;
+    client.release();
 
-    // for (let i = 0; i < 5; i++) {
-    let writeStream = fs.createWriteStream('sdc-db/sql/seed/batch.txt');
-    await writeRecordsToTxt(data, fakeCount, writeStream, 'utf-8', async () => {
-      await writeStream.end();
-      console.log('Done writting records to file');
+    let client2 = await db.getClient();
+    for (let i = 0; i < PrimaryRecordBatchInserts; i++) {
+      let recordsToInsert = batchInsertCount;
+      await writeFilePromise('sdc-db/sql/seed/batch.txt', data, recordsToInsert, idIndex);
 
       let query = `COPY workspaces FROM '/Users/alekortiz/Documents/Hack Reactor/Immersive/Week 25/SDC/photos-service/sdc-db/sql/seed/batch.txt' WITH (FORMAT text, HEADER false, DELIMITER '|')`;
-
       await helper.q.runQuery(client2, query);
-      fs.unlinkSync('sdc-db/sql/seed/batch.txt');
-    });
-    // }
+
+      idIndex += recordsToInsert;
+    }
+
+    client2.release();
+    let client3 = await db.getClient();
 
   } catch(e) {
     console.error('Unable to seed db: ', e);
   } finally {
-    client.release();
+    await helper.q.runQuery(client3, `ALTER TABLE photos LOGGED`);
+    await helper.q.runQuery(client3, `ALTER TABLE workspaces LOGGED`);
+    await helper.q.runQuery(client3, `CREATE INDEX photo_id ON photos (photo_id);`);
+    await helper.q.runQuery(client3, `CREATE INDEX workspace_id ON workspaces (workspace_id);`);
+    client3.release();
   }
 }
 

@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 
-const writeRecordsToTxt = async (data, amountOfRecords, writer, encoding, callback) => {
+const writeRecordsToTxt = async (data, amountOfRecords, writer, encoding, idIndex, callback) => {
   return new Promise((resolve, reject) => {
   let j = 0;
   let i = amountOfRecords;
@@ -12,11 +12,17 @@ const writeRecordsToTxt = async (data, amountOfRecords, writer, encoding, callba
         j = 0;
       };
       i -= 1;
-      const record = `${uuidv4()}|${data[j].trim()}\n`;
+      const record = `${uuidv4()}|${idIndex}|${data[j].trim()}\n`;
+      idIndex++;
       j++;
       if (i === 0) {
-        ok = writer.write(record, encoding, callback);
-        return;
+        ok = writer.write(record, encoding);
+        if (ok === true) {
+          console.log(`Total records after batch is inserted: ${idIndex}`);
+          callback(null, ok);
+        } else {
+          callback('Unable to write file', ok);
+        }
       } else {
         ok = writer.write(record, encoding);
       }
@@ -26,13 +32,20 @@ const writeRecordsToTxt = async (data, amountOfRecords, writer, encoding, callba
     }
   };
   write();
-  // return;
   });
 };
 
-// writeRecordsToCsv(amountOfRecords, writeStream, 'utf-8', () => {
-//   writeStream.end();
-// });
+writeRecordsToTxtPromise = (data, amountOfRecords, writer, encoding, idIndex) => {
+  return new Promise ((resolve, reject) => {
+    writeRecordsToTxt(data, amountOfRecords, writer, encoding, idIndex, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+}
 
-module.exports = writeRecordsToTxt;
+module.exports = writeRecordsToTxtPromise;
 

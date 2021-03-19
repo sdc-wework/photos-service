@@ -12,3 +12,6 @@ package-lock.json
 # Build files
 dist/*
 !dist/index.html
+
+# Records to insert
+batch.txt

@@ -1,13 +1,25 @@
 // run queries
 const runQuery = async (client, query) => {
-  try {
-    let result = await client.query(query);
-    let { command } = result;
-    let { rowCount } = result;
-    console.log(`Executed:`, command, `Inserted:`, rowCount, `items.`);
-  } catch (err) {
-    console.error('Query failed to run: ', err.stack);
-  }
+  // try {
+  //   let result = await client.query(query);
+  //   let { command } = result;
+  //   let { rowCount } = result;
+  //   console.log(`Executed:`, command, `Inserted:`, rowCount, `items.`);
+  // } catch (err) {
+  //   console.error('Query failed to run: ', err.stack);
+  // }
+  return new Promise((resolve, reject) => {
+    client.query(query, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        let { command } = res;
+        let { rowCount } = res;
+        console.log(`Executed:`, command, `Inserted:`, rowCount, `items.`);
+        resolve(res);
+      }
+    });
+  });
 };
 
 const runInsertQuery = async (client, insertQuery, values) => {
@@ -27,14 +39,14 @@ const runReadQuery = async (client, readQuery) => {
   }
 };
 
-// table schema query
+// table schema
 const photos = {
   up:
     `CREATE TABLE photos (
-      photo_id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+      photo_id uuid PRIMARY KEY NOT NULL,
       description VARCHAR NOT NULL,
       url VARCHAR NOT NULL,
-      workspace_id uuid REFERENCES workspaces (workspace_id)
+      workspace_id INTEGER REFERENCES workspaces (workspace_id)
     );`,
   down: `DROP TABLE IF EXISTS photos;`
 };
@@ -42,7 +54,8 @@ const photos = {
 const workspaces = {
   up:
     `CREATE TABLE workspaces (
-      workspace_id uuid PRIMARY KEY,
+      id uuid PRIMARY KEY NOT NULL,
+      workspace_id INTEGER UNIQUE NOT NULL,
       description VARCHAR NOT NULL
     );`,
   down: `DROP TABLE IF EXISTS workspaces;`
@@ -62,15 +75,15 @@ const table = {
 
 // Ex. insertPhotoRecord(['Photo description goes here', 'http://www.photourl.com/']);
 const insertPhotoRecord = (client, values) => runInsertQuery(client, `
-  INSERT INTO photos (photo_id, description, url)
-  VALUES (uuid_generate_v4(), $1, $2);
+  INSERT INTO photos (photo_id, description, url, workspace_id)
+  VALUES (uuid_generate_v4(), $1, $2, $3);
   `, values
 );
 
-// Ex. insertWorkspaceRecord(['Workspace description goes here']);
+// Ex. insertWorkspaceRecord([workspaceId, 'Workspace description goes here']);
 const insertWorkspaceRecord = (client, descriptionValue) => runInsertQuery(client, `
-INSERT INTO workspaces (workspace_id, description)
-VALUES (uuid_generate_v4(), $1);
+INSERT INTO workspaces (id, workspace_id, description)
+VALUES (uuid_generate_v4(), $1, $2);
 `, descriptionValue
 );
 
@@ -88,15 +101,6 @@ const getRecord = (client, field, table, conditionField, condition) => {
   return runReadQuery(client, query);
 };
 
-
-// csv writing
-const createWorkspaceCsvRecord = (description) => {
-  return {
-    description: description
-  };
-}
-
-
 module.exports.table = table;
 module.exports.q = {
   runQuery: runQuery,
@@ -108,8 +112,5 @@ module.exports.crud = {
   insertWorkspaceRecord: insertWorkspaceRecord,
   deleteRecord: deleteRecord,
   getRecord: getRecord
-};
-module.exports.csv = {
-  createWorkspaceCsvRecord: createWorkspaceCsvRecord
 };
 
