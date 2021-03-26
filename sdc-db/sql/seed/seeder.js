@@ -4,19 +4,17 @@ const fs = require('fs');
 const seedHelper = require('./seedHelpers.js');
 
 const seed = async () => {
+  console.time('seed');
   // get data for seed
   let photoUrls = await seedHelper.getPhotos();
-  // let descriptionWords = getPhotoDescriptions();
   let data = await seedHelper.getWorkspaceDescriptions();
 
   let batchInsertCount = 1000000;
   let primaryRecordCount = 10000000;
-  let secondaryRecordCount = 70000000;
   let PrimaryRecordBatchInserts = primaryRecordCount / batchInsertCount;
-  let SecondaryRecordBatchInserts = secondaryRecordCount / batchInsertCount;
   let idIndex = 1;
-  let fakeCount = 100000;
-  let fakeBatchInserts = 2;
+  // let fakeCount = 100000;
+  // let fakeBatchInserts = 2;
   let workspacesBulkInsertQ = `COPY workspaces FROM '/Users/alekortiz/Documents/Hack Reactor/Immersive/Week 25/SDC/photos-service/sdc-db/sql/seed/workspacesBatch.txt' WITH (FORMAT text, HEADER false, DELIMITER '|')`;
   let photosBulkInsertQ = `COPY photos FROM '/Users/alekortiz/Documents/Hack Reactor/Immersive/Week 25/SDC/photos-service/sdc-db/sql/seed/photosBatch.txt' WITH (FORMAT text, HEADER false, DELIMITER '|')`;
   let workspaceIdIndex = 1;
@@ -39,8 +37,8 @@ const seed = async () => {
     client.release();
 
     let client2 = await db.getClient();
-    for (let i = 0; i < fakeBatchInserts; i++) {
-      let recordsToInsert = fakeCount;
+    for (let i = 0; i < PrimaryRecordBatchInserts; i++) {
+      let recordsToInsert = batchInsertCount;
 
       await seedHelper.writeWorkspacesFilePromise('sdc-db/sql/seed/workspacesBatch.txt', data, recordsToInsert, idIndex);
       await helper.q.runQuery(client2, workspacesBulkInsertQ);
@@ -79,6 +77,8 @@ const seed = async () => {
 
   } catch(e) {
     console.error('Unable to seed db: ', e);
+  } finally {
+    console.timeEnd('seed');
   }
 };
 
