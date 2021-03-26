@@ -1,13 +1,5 @@
 // run queries
 const runQuery = async (client, query) => {
-  // try {
-  //   let result = await client.query(query);
-  //   let { command } = result;
-  //   let { rowCount } = result;
-  //   console.log(`Executed:`, command, `Inserted:`, rowCount, `items.`);
-  // } catch (err) {
-  //   console.error('Query failed to run: ', err.stack);
-  // }
   return new Promise((resolve, reject) => {
     client.query(query, (err, res) => {
       if (err) {
