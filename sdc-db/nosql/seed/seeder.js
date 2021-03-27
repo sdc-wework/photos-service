@@ -1,10 +1,8 @@
-const nano = require('nano')('http://sdc:SDC1234567890!@localhost:5984');
-const dbName = 'spaceworkphotos';
-const db = nano.use(dbName);
+require('dotenv').config();
+const { db } = require('../index.js');
 const dbHelpers = require('../index.js');
 const seedHelper = require('./helpers.js');
 const { v4: uuidv4 } = require('uuid');
-
 
 const seed = async () => {
   console.time('seed');
@@ -14,9 +12,9 @@ const seed = async () => {
 
   // prepare database
   console.log('Deleting existing db:');
-  await dbHelpers.deleteDb(dbName);
+  await dbHelpers.deleteDb();
   console.log('Creating db:');
-  await dbHelpers.createDb(dbName);
+  await dbHelpers.createDb();
 
   let batchInsertCount = 5000;
   let primaryRecordCount = 10000000;
@@ -89,4 +87,13 @@ const seed = async () => {
   console.timeEnd('seed');
 };
 
-seed();
+// seed();
+
+
+// to verify seed
+const getDbInfo = async () => {
+  const res = await db.info();
+  console.log(res);
+};
+
+// getDbInfo();
