@@ -46,8 +46,8 @@ writeWorkspacesRecordsToTxtPromise = (data, amountOfRecords, writer, encoding, i
   });
 }
 
-const randomIntBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
+const randomIntBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const writePhotoRecordsToTxt = async (data, amountOfRecords, writer, encoding, idIndex, workspace_id, callback) => {
   return new Promise((resolve, reject) => {

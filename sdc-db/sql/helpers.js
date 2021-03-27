@@ -99,14 +99,14 @@ const getRecord = (client, field, table, conditionField, condition) => {
 
 module.exports.table = table;
 module.exports.q = {
-  runQuery: runQuery,
-  runInsertQuery: runInsertQuery,
-  runReadQuery: runReadQuery
+  runQuery,
+  runInsertQuery,
+  runReadQuery
 };
 module.exports.crud = {
-  insertPhotoRecord: insertPhotoRecord,
-  insertWorkspaceRecord: insertWorkspaceRecord,
-  deleteRecord: deleteRecord,
-  getRecord: getRecord
+  insertPhotoRecord,
+  insertWorkspaceRecord,
+  deleteRecord,
+  getRecord
 };
 

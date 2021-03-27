@@ -45,7 +45,7 @@ const seed = async () => {
 
       idIndex += recordsToInsert;
 
-      // Insert photo records
+      // insert photo records
       while (workspaceIdIndex < idIndex) {
         let currentWorkspaceId = await client2.query(`SELECT MAX(workspace_id) from PHOTOS;`);
 
@@ -66,12 +66,14 @@ const seed = async () => {
 
     client2.release();
     let client3 = await db.getClient();
+    // restore table settings and create indexes
     await helper.q.runQuery(client3, `ALTER TABLE workspaces SET LOGGED`);
     await helper.q.runQuery(client3, `ALTER TABLE photos SET LOGGED`);
     await helper.q.runQuery(client3, `CREATE INDEX photo_id ON photos (workspace_id);`);
     await helper.q.runQuery(client3, `CREATE INDEX workspace_id ON workspaces (workspace_id);`);
     client3.release();
 
+    // delete last batch leftover files
     await fs.promises.unlink('sdc-db/sql/seed/workspacesBatch.txt');
     await fs.promises.unlink('sdc-db/sql/seed/photosBatch.txt');
 
