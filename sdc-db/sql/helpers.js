@@ -23,12 +23,16 @@ const runInsertQuery = async (client, insertQuery, values) => {
 };
 
 const runReadQuery = async (client, readQuery) => {
-  try {
-    const { rows } = await client.query(readQuery);
-    return rows;
-  } catch (err) {
-    console.error('Retrieve query failed: ', err.stack);
-  }
+  return new Promise((resolve, reject) => {
+    client.query(readQuery, (err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        const { rows } = res;
+        resolve(rows);
+      }
+    });
+  });
 };
 
 // table schema

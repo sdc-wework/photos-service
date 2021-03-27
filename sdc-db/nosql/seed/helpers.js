@@ -1,3 +1,4 @@
+const https = require('https');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 cloudinary.config({
@@ -91,3 +92,14 @@ const getWorkspaceDescriptions = async () => {
   };
   return descriptionSentences;
 };
+
+const randomIntBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+module.exports = {
+  getPhotos,
+  get,
+  getHipsum,
+  getPhotoDescriptions,
+  getWorkspaceDescriptions,
+  randomIntBetween
+}
