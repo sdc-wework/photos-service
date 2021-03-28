@@ -161,6 +161,7 @@ var PhotosSlider = function PhotosSlider() {
     fetch("/api/photos/workspace/".concat(workspaceId)).then(function (res) {
       return res.json();
     }).then(function (data) {
+      console.log(data);
       setPhotos(data);
     });
   }, []);
