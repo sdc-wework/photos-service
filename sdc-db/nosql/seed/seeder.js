@@ -45,6 +45,7 @@ const seed = async () => {
       for (let k = 0; k < randomNumOfPhotosForWorkspace; k++) {
 
         let photoInfo = {
+          id: `${uuidv4()}`,
           url: photoUrls[photosIndex],
           description: photoDescriptionWords[desciptionWordsIndex]
         };

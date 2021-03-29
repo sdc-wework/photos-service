@@ -3,12 +3,6 @@ const path = require('path');
 
 module.exports = {
 
-  default: {
-    get: (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-    }
-  },
-
   photos: {
     get: async (req, res) => {
       const { id } = req.params;
