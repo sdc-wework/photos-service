@@ -8,6 +8,9 @@ const seed = async () => {
   console.time('seed');
   // get data for seed
   let photoUrls = await seedHelper.getPhotos();
+  let strLength = 'upload/'.length;
+  let optimizedPhotoUrls = photoUrls.map(url => url = `${url.slice(0, url.indexOf('upload/') + strLength)}q_60/${url.slice(url.indexOf('upload/') + strLength)}`);
+  console.log(`Optimized ${optimizedPhotoUrls.length} cloudinary urls`);
   let photoDescriptionWords = await seedHelper.getPhotoDescriptions();
 
   // prepare database
@@ -20,7 +23,7 @@ const seed = async () => {
   let primaryRecordCount = 10000000;
   let PrimaryRecordBatchInserts = Math.floor(primaryRecordCount / batchInsertCount);
 
-  let photoUrlsLength = photoUrls.length;
+  let photoUrlsLength = optimizedPhotoUrls.length;
   let descriptionWordsLength = photoDescriptionWords.length;
   let photosCount = 0;
   let workspace_id = 1;
@@ -46,7 +49,7 @@ const seed = async () => {
 
         let photoInfo = {
           id: `${uuidv4()}`,
-          url: photoUrls[photosIndex],
+          url: optimizedPhotoUrls[photosIndex],
           description: photoDescriptionWords[desciptionWordsIndex]
         };
         photosInfo.push(photoInfo);
@@ -74,6 +77,8 @@ const seed = async () => {
       console.log('seed 50% complete')
     } else if ((i / PrimaryRecordBatchInserts) === 0.75) {
       console.log('seed 75% complete')
+    } else if (i === primaryRecordCount) {
+      console.log('seed 100% complete')
     }
     recordBatch = [];
   }
@@ -83,18 +88,17 @@ const seed = async () => {
     name: 'workspaceId-index'
   };
   const res = await db.createIndex(indexDef);
-  console.log('Created index: ', res);
+  console.log('Creating index: ', res);
 
   console.timeEnd('seed');
-};
-
-// seed();
+}
+seed();
 
 
 // to verify seed
 const getDbInfo = async () => {
   const res = await db.info();
+  // console.log(res.doc_count);
   console.log(res);
 };
-
 // getDbInfo();

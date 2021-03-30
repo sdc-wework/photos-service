@@ -107,7 +107,6 @@ const PhotosSlider = () => {
     fetch(`/api/photos/workspace/${workspaceId}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setPhotos(data);
       });
   }, []);

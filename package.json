@@ -19,6 +19,7 @@
     "postgresTest": "node sdc-db/sql/index.js",
     "couchdbTest": "node sdc-db/nosql/index.js",
     "seed:cloudinary": "node sdc-deploy/uploadPhotos.js",
+    "sdc-seed": "node sdc-db/nosql/seed/seeder.js",
     "sdc-server": "node sdc-server/index.js",
     "sdc-server:dev": "nodemon sdc-server/index.js"
   },

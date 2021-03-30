@@ -6,8 +6,9 @@ module.exports = {
   photos: {
     get: async (req, res) => {
       const { id } = req.params;
+      const { workspaceId } = req.params;
       try {
-        const photo = await db.getPhotoById(id);
+        const photo = await db.getPhotoById(workspaceId, id);
         res.json(photo);
       } catch (err) {
         console.error(`No error exits for id: ${id}`);
@@ -16,6 +17,7 @@ module.exports = {
     },
     put: async (req, res) => {
       const { id } = req.params;
+      const { workspaceId } = req.params;
       const newPhotoInfo = req.body;
       const newPhotoUrl = newPhotoInfo.url;
       const newPhotoDescription = newPhotoInfo.description;
@@ -52,8 +54,9 @@ module.exports = {
     get: async (req, res) => {
       const { workspaceId } = req.params;
       try {
-        const photos = await db.getPhotosByWorkspaceId(workspaceId);
-        res.json(photos);
+        const photosInfo = await db.getPhotosByWorkspaceId(workspaceId);
+        const photoUrls = photosInfo.docs[0].photos;
+        res.json(photoUrls);
       } catch (err) {
         console.error(`No photos exist for workspaceId: ${workspaceId}`);
         res.sendStatus(500);
@@ -63,13 +66,13 @@ module.exports = {
       const { workspaceId } = req.params;
       const newPhotoInfo = req.body;
       const newPhotoUrl = newPhotoInfo.url;
-      const newPhotodescription = newPhotoInfo.description;
+      const newPhotoDescription = newPhotoInfo.description;
 
-      if(!newPhotoUrl) {
+      if(!newPhotoUrl || !newPhotoDescription) {
         res.sendStatus(400);
       } else {
         try {
-          await db.savePhoto(workspaceId, newPhotoUrl, newPhotodescription);
+          await db.savePhoto(workspaceId, newPhotoUrl, newPhotoDescription);
           res.sendStatus(201);
         } catch (err) {
           console.error('Unable to save photo: ', err);
