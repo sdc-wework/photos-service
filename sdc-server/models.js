@@ -21,9 +21,11 @@ const getPhotosByWorkspaceId = (workspaceId) => {
       let res = await db.find({
         selector: {
           workspace_id: { $eq: workspaceId }
-        }
+        },
+        limit: 1
       });
       resolve(res);
+      console.log(res);
     } catch(e) {
       console.error('unable to get photos by workspace id: ', e);
       reject(e);
@@ -49,7 +51,8 @@ const savePhoto = async (workspaceId, url, description) => {
     workspacePhotos.unshift(newPhotoRecord);
 
     try {
-      let savePhoto = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: workspacePhotos });
+      let savePhoto = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: workspacePhotos , execution_stats: true});
+      console.log(savePhoto);
       resolve(savePhoto);
     } catch (e) {
       console.error('unable to save photo: ', e);

@@ -21,7 +21,6 @@ module.exports = {
       const newPhotoInfo = req.body;
       const newPhotoUrl = newPhotoInfo.url;
       const newPhotoDescription = newPhotoInfo.description;
-
       try {
         let updatePhoto = await db.updatePhoto(workspaceId, id, newPhotoUrl, newPhotoDescription);
         if (updatePhoto.ok) {
@@ -68,7 +67,6 @@ module.exports = {
       const newPhotoInfo = req.body;
       const newPhotoUrl = newPhotoInfo.url;
       const newPhotoDescription = newPhotoInfo.description;
-
       if(!newPhotoUrl || !newPhotoDescription) {
         res.sendStatus(400);
       } else {
@@ -83,7 +81,6 @@ module.exports = {
     },
     delete: async (req, res) => {
       const { workspaceId } = req.params;
-
       try {
         let deletePhotosByWorkspaceId = await db.deletePhotosByWorkspaceId(workspaceId);
         if (deletePhotosByWorkspaceId.ok) {
