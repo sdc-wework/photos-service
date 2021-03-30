@@ -23,8 +23,8 @@ module.exports = {
       const newPhotoDescription = newPhotoInfo.description;
 
       try {
-        let updatePhoto = await db.updatePhoto(id, newPhotoUrl, newPhotoDescription);
-        if (updatePhoto.nModified === 1) {
+        let updatePhoto = await db.updatePhoto(workspaceId, id, newPhotoUrl, newPhotoDescription);
+        if (updatePhoto.ok) {
           res.sendStatus(200);
         } else {
           res.sendStatus(400);

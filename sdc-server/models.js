@@ -2,7 +2,6 @@ const { db } = require('../sdc-db/nosql/index.js');
 const { v4: uuidv4 } = require('uuid');
 
 
-
 const getPhotoById = async (workspaceId, id) => {
   return new Promise( async (resolve, reject) => {
     try {
@@ -59,7 +58,32 @@ const savePhoto = async (workspaceId, url, description) => {
   });
 };
 
-// const updatePhoto = async (id, url, description) => ;
+const updatePhoto = async (workspaceId, id, url, description) => {
+  return new Promise( async (resolve, reject) => {
+    if (!url && !description) {
+      reject();
+    };
+    let photosInfo = await getPhotosByWorkspaceId(workspaceId);
+    let document = photosInfo.docs[0];
+    let _id = document._id;
+    let _rev = document._rev;
+    let workspacePhotos = document.photos;
+    let updatedPhotos = workspacePhotos.map((photo) => {
+      if (photo.id === id) {
+        photo.url = url ? url : photo.url;
+        photo.description = description ? description : photo.description;
+      };
+      return photo;
+    });
+    try {
+      let updatePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: updatedPhotos });
+      resolve(updatePhotos);
+    } catch (e) {
+      console.error('unable to update photo: ', e);
+      reject(e);
+    }
+  });
+};
 
 const deletePhotoById = async (workspaceId, id) => {
   return new Promise( async (resolve, reject) => {
@@ -72,14 +96,12 @@ const deletePhotoById = async (workspaceId, id) => {
 
     try {
       let updatePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: photosNotRemoved });
-      console.log(updatePhotos);
       resolve(updatePhotos);
     } catch (e) {
       console.error('unable to save photo: ', e);
       reject(e);
     }
   });
-
 };
 
 // const deletePhotosByWorkspaceId = async (workspaceId) => ;
@@ -88,7 +110,7 @@ module.exports = {
   getPhotoById,
   getPhotosByWorkspaceId,
   savePhoto,
-  // updatePhoto,
+  updatePhoto,
   deletePhotoById,
   // deletePhotosByWorkspaceId
 };
