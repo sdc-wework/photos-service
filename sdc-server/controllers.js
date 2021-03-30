@@ -36,9 +36,10 @@ module.exports = {
     },
     delete: async (req, res) => {
       const { id } = req.params;
+      const { workspaceId } = req.params;
       try {
-        let deletePhoto = await db.deletePhotoById(id);
-        if (deletePhoto.deletedCount === 1) {
+        let deletePhoto = await db.deletePhotoById(workspaceId, id);
+        if (deletePhoto.ok) {
           res.sendStatus(200);
         } else {
           res.sendStatus(404);

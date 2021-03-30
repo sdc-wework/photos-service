@@ -61,7 +61,26 @@ const savePhoto = async (workspaceId, url, description) => {
 
 // const updatePhoto = async (id, url, description) => ;
 
-// const deletePhotoById = async (id) => ;
+const deletePhotoById = async (workspaceId, id) => {
+  return new Promise( async (resolve, reject) => {
+    let photosInfo = await getPhotosByWorkspaceId(workspaceId);
+    let document = photosInfo.docs[0];
+    let _id = document._id;
+    let _rev = document._rev;
+    let workspacePhotos = document.photos;
+    let photosNotRemoved = workspacePhotos.filter((photo) => photo.id !== id);
+
+    try {
+      let updatePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: photosNotRemoved });
+      console.log(updatePhotos);
+      resolve(updatePhotos);
+    } catch (e) {
+      console.error('unable to save photo: ', e);
+      reject(e);
+    }
+  });
+
+};
 
 // const deletePhotosByWorkspaceId = async (workspaceId) => ;
 
@@ -70,6 +89,6 @@ module.exports = {
   getPhotosByWorkspaceId,
   savePhoto,
   // updatePhoto,
-  // deletePhotoById,
+  deletePhotoById,
   // deletePhotosByWorkspaceId
 };
