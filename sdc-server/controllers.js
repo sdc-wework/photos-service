@@ -86,7 +86,7 @@ module.exports = {
 
       try {
         let deletePhotosByWorkspaceId = await db.deletePhotosByWorkspaceId(workspaceId);
-        if (deletePhotosByWorkspaceId.n === deletePhotosByWorkspaceId.deletedCount && deletePhotosByWorkspaceId.deletedCount > 0) {
+        if (deletePhotosByWorkspaceId.ok) {
           res.sendStatus(200);
         } else {
           res.send(404);

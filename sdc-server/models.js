@@ -104,7 +104,23 @@ const deletePhotoById = async (workspaceId, id) => {
   });
 };
 
-// const deletePhotosByWorkspaceId = async (workspaceId) => ;
+const deletePhotosByWorkspaceId = async (workspaceId) => {
+  return new Promise( async (resolve, reject) => {
+    let photosInfo = await getPhotosByWorkspaceId(workspaceId);
+    let document = photosInfo.docs[0];
+    let _id = document._id;
+    let _rev = document._rev;
+    let emptyPhotos = [];
+
+    try {
+      let removePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: emptyPhotos });
+      resolve(removePhotos);
+    } catch (e) {
+      console.error('Unable to remove workspace photos: ', e);
+      reject(e);
+    }
+  });
+};
 
 module.exports = {
   getPhotoById,
@@ -112,5 +128,5 @@ module.exports = {
   savePhoto,
   updatePhoto,
   deletePhotoById,
-  // deletePhotosByWorkspaceId
+  deletePhotosByWorkspaceId
 };
