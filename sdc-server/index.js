@@ -8,8 +8,8 @@ const app = express();
 module.exports.app = app;
 
 // dev
-const morgan = require('morgan');
-app.use(morgan('dev'));
+// const morgan = require('morgan');
+// app.use(morgan('dev'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
