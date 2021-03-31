@@ -113,7 +113,6 @@ const deletePhotosByWorkspaceId = async (workspaceId) => {
     let _id = document._id;
     let _rev = document._rev;
     let emptyPhotos = [];
-    console.log('DOCUMENT: ', document);
     try {
       let removePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: emptyPhotos });
       resolve(removePhotos);
