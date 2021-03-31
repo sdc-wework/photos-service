@@ -6,7 +6,8 @@ const getPhotoById = async (workspaceId, id) => {
   return new Promise( async (resolve, reject) => {
     try {
       let workspacePhotos = await getPhotosByWorkspaceId(workspaceId);
-      let photoInfo = workspacePhotos.find(photo => photo.id === id);
+      let workspacePhotosDoc = workspacePhotos.docs[0];
+      let photoInfo = workspacePhotosDoc.photos.find(photo => photo.id === id);
       resolve(photoInfo.url);
     } catch(e) {
       console.error('unable to get photo by id: ', e);
@@ -25,7 +26,6 @@ const getPhotosByWorkspaceId = (workspaceId) => {
         limit: 1
       });
       resolve(res);
-      console.log(res);
     } catch(e) {
       console.error('unable to get photos by workspace id: ', e);
       reject(e);
@@ -51,8 +51,7 @@ const savePhoto = async (workspaceId, url, description) => {
     workspacePhotos.unshift(newPhotoRecord);
 
     try {
-      let savePhoto = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: workspacePhotos , execution_stats: true});
-      console.log(savePhoto);
+      let savePhoto = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: workspacePhotos });
       resolve(savePhoto);
     } catch (e) {
       console.error('unable to save photo: ', e);
@@ -114,7 +113,7 @@ const deletePhotosByWorkspaceId = async (workspaceId) => {
     let _id = document._id;
     let _rev = document._rev;
     let emptyPhotos = [];
-
+    console.log('DOCUMENT: ', document);
     try {
       let removePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: emptyPhotos });
       resolve(removePhotos);

@@ -3,6 +3,8 @@ const path = require('path');
 
 module.exports = {
 
+  error: (req, res) => res.sendStatus(400),
+
   photos: {
     get: async (req, res) => {
       const { id } = req.params;

@@ -15,5 +15,8 @@ router.put('/photos/:workspaceId/:id', controller.photos.put);
 
 router.delete('/photos/:workspaceId/:id', controller.photos.delete);
 
+// all others
+router.all('*', controller.error);
+
 
 module.exports = router;
