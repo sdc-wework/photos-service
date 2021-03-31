@@ -25,22 +25,34 @@ const uploadOptions = {
 };
 
 const uploadPhoto = async (imageUrl, folderName) => {
-    imageUrl = `${imageUrl}?q=60`;
-    await cloudinary.uploader.upload(imageUrl, uploadOptions)
+  imageUrl = `${imageUrl}?q=60`;
+  try {
+    await cloudinary.uploader.upload(imageUrl, uploadOptions);
+  } catch(e) {
+    console.error(e);
+  }
 };
 
 const uploadPhotos = async (imageUrls, folderName) => {
-  let folder = await createCloudinaryFolder(folderName);
-  for (let i = 0; i < imageUrls.length; i++) {
-    console.log(i);
-    let imageUrl = imageUrls[i];
-    await uploadPhoto(imageUrl, folderName);
-  };
+  try {
+    let folder = await createCloudinaryFolder(folderName);
+    for (let i = 0; i < imageUrls.length; i++) {
+      let imageUrl = imageUrls[i];
+      await uploadPhoto(imageUrl, folderName);
+    };
+  } catch(e) {
+    console.error(e);
+  }
 };
 
 const run = async () => {
-  await uploadPhotos(imageUrls, folderName);
-  process.exit();
+  try {
+    await uploadPhotos(imageUrls, folderName);
+  } catch(e) {
+    console.error(e);
+  } finally {
+    process.exit();
+  }
 };
 
 run();
