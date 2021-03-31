@@ -1,6 +1,5 @@
-const s3 = require('../deploy/s3.js');
+const s3 = require('./s3.js');
 const fs = require('fs');
-const path = require('path');
 
 const uploadBuild = async (file, encoding = '') => {
   await s3.createBucket();
@@ -14,8 +13,8 @@ const uploadBuild = async (file, encoding = '') => {
 };
 
 const run = async () => {
-  await uploadBuild(path.join(__dirname, '../client/dist/photos-slider.js'));
-  await uploadBuild(path.join(__dirname, '../client/dist/photos-slider.js.gz'), 'gzip');
+  await uploadBuild('../client/dist/photos-slider.js');
+  await uploadBuild('../client/dist/photos-slider.js.gz', 'gzip');
   process.exit;
 };
 
