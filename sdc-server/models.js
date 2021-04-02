@@ -8,7 +8,7 @@ const getPhotoById = async (workspaceId, id) => {
       let workspacePhotos = await getPhotosByWorkspaceId(workspaceId);
       let workspacePhotosDoc = workspacePhotos.docs[0];
       let photoInfo = workspacePhotosDoc.photos.find(photo => photo.id === id);
-      resolve(photoInfo.url);
+      resolve(photoInfo);
     } catch(e) {
       console.error('unable to get photo by id: ', e);
       reject(e);
