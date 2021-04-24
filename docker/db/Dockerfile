@@ -10,8 +10,8 @@ RUN npm install
 
 COPY . .
 
-# EXPOSE 5984
+EXPOSE 6001
 
-# RUN npm run build
+RUN npm run build
 
-CMD ["node", "sdc-server/index.js"]
+CMD ["node", "server/index.js"]

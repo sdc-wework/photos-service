@@ -1,4 +1,5 @@
 const { db } = require('../sdc-db/nosql/index.js');
+const cache = require('../sdc-server/redis-models.js');
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -49,8 +50,8 @@ const savePhoto = async (workspaceId, url, description) => {
       description: description
     };
     workspacePhotos.unshift(newPhotoRecord);
-
     try {
+      cache.save(workspaceId, workspacePhotos);
       let savePhoto = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: workspacePhotos });
       resolve(savePhoto);
     } catch (e) {
@@ -97,6 +98,7 @@ const deletePhotoById = async (workspaceId, id) => {
     let photosNotRemoved = workspacePhotos.filter((photo) => photo.id !== id);
 
     try {
+      cache.save(workspaceId, photosNotRemoved);
       let updatePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: photosNotRemoved });
       resolve(updatePhotos);
     } catch (e) {
@@ -114,6 +116,7 @@ const deletePhotosByWorkspaceId = async (workspaceId) => {
     let _rev = document._rev;
     let emptyPhotos = [];
     try {
+      cache.save(workspaceId, emptyPhotos);
       let removePhotos = await db.insert({ _id: _id, _rev: _rev, workspace_id: workspaceId, photos: emptyPhotos });
       resolve(removePhotos);
     } catch (e) {

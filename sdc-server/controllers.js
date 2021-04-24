@@ -1,4 +1,5 @@
 const db = require('../sdc-server/models.js');
+const cache = require('../sdc-server/redis-models.js');
 const path = require('path');
 
 module.exports = {
@@ -56,9 +57,15 @@ module.exports = {
     get: async (req, res) => {
       const { workspaceId } = req.params;
       try {
-        const photosInfo = await db.getPhotosByWorkspaceId(workspaceId);
-        const photoUrls = photosInfo.docs[0].photos;
-        res.json(photoUrls);
+        const cachedPhotoInfo = await cache.check(workspaceId);
+        if (cachedPhotoInfo) {
+          res.json(JSON.parse(cachedPhotoInfo));
+        } else {
+          const photosInfo = await db.getPhotosByWorkspaceId(workspaceId);
+          const photoUrls = photosInfo.docs[0].photos;
+          cache.save(workspaceId, photoUrls);
+          res.json(photoUrls);
+        }
       } catch (err) {
         console.error(`No photos exist for workspaceId: ${workspaceId}`);
         res.sendStatus(500);

@@ -21,7 +21,8 @@
     "seed:cloudinary": "node sdc-deploy/uploadPhotos.js",
     "sdc-seed": "node sdc-db/nosql/seed/seeder.js",
     "sdc-server": "node sdc-server/index.js",
-    "sdc-server:dev": "nodemon sdc-server/index.js"
+    "sdc-server:dev": "nodemon sdc-server/index.js",
+    "sdc-server:test": "node -r newrelic sdc-server/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.3.0",
@@ -34,6 +35,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "redis": "^3.1.2",
     "styled-components": "^5.2.1",
     "webpack": "^5.19.0",
     "webpack-cli": "^4.4.0"
@@ -53,6 +55,7 @@
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "jest": "^26.6.3",
     "morgan": "^1.10.0",
+    "newrelic": "^7.3.0",
     "regenerator-runtime": "^0.13.7",
     "sharp": "^0.27.2",
     "streamifier": "^0.1.1",

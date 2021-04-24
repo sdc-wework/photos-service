@@ -19,7 +19,7 @@ const seed = async () => {
   console.log('Creating db:');
   await dbHelpers.createDb();
 
-  let batchInsertCount = 5000;
+  let batchInsertCount = 2500;
   let primaryRecordCount = 10000000;
   let PrimaryRecordBatchInserts = Math.floor(primaryRecordCount / batchInsertCount);
 
@@ -94,8 +94,7 @@ const seed = async () => {
 
   console.timeEnd('seed');
 };
-
-seed();
+// seed();
 
 
 // to verify seed
@@ -104,4 +103,4 @@ const getDbInfo = async () => {
   // console.log(res.doc_count);
   console.log(res);
 };
-// getDbInfo();
+getDbInfo();

@@ -1,5 +1,6 @@
 require('dotenv').config();
-const host = 'localhost', port = '5984';
+const host = process.env.couchDb_host || 'localhost';
+const port = process.env.couchDb_port || '5984';
 const nano = require('nano')(`http://${process.env.couchDb_user}:${process.env.couchDb_password}@${host}:${port}`);
 
 const dbName = 'spaceworkphotos';
